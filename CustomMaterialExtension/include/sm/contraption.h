@@ -67,10 +67,22 @@ namespace SM {
 		/* 0x0008 */ char pad_0x0008[0x50];
 	public:
 		Console* console;
+	private:
+		/* 0x0010 */ char pad_0x0010[0x16C];
+	public:
+		/* 0x017C */ uint8_t gameStateIndex;
+		
+		static Contraption* GetInstance() {
+		return *reinterpret_cast<Contraption**>(reinterpret_cast<uintptr_t>(GetModuleHandle(nullptr)) + Offsets::Contraption);
+		}
 
 	private:
 		inline static Console* GetConsole() {
-			Contraption* contraption = *reinterpret_cast<Contraption**>(reinterpret_cast<uintptr_t>(GetModuleHandle(nullptr)) + Offsets::Contraption);
+			auto contraption = GetInstance();
+			if (!contraption) {
+				return nullptr;
+			}
+
 			return contraption->console;
 		}
 
@@ -82,7 +94,10 @@ namespace SM {
 		/// <param name="colour">What colour (default is white)</param>
 		/// <param name="type">What type of log (default is default)</param>
 		inline static void Log(const std::string& message, Colour colour = Colour::WHITE, LogType type = LogType::Default) {
-			GetConsole()->Log(message, colour, type);
+			auto console = GetConsole();
+			if (!console) return;
+
+			console->Log(message, colour, type);
 		}
 	};
 } // namespace SM

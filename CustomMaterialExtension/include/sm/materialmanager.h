@@ -25,27 +25,13 @@ namespace SM {
 
 	struct MaterialManager {
 	public:
-		/// <summary>
-		/// Loads material definitions from the given set and shader path
-		/// </summary>
-		/// <param name="category">
-		/// The type of material to load
-		/// </param>
-		/// <param name="setPath">
-		///	The path to the material set JSON file
-		/// </param>
-		/// <param name="shaderPath">
-		/// The path to the shader file (.hlsl)
-		/// </param>
-		/// <param name="flags">
-		/// Flags to pass to the material loader
-		/// </param>
-		/// <param name="skipOptimization">
-		/// Whether to skip optimization
-		/// </param>
-		/// <param name="additionalIncludes">
-		/// Additional include paths to pass to the material loader, can be an empty vector
-		/// </param>
+		/// <summary>Loads material definitions from the given set and shader path</summary>
+		/// <param name="category">The type of material to load</param>
+		/// <param name="setPath">The path to the material set JSON file</param>
+		/// <param name="shaderPath">The path to the shader file (.hlsl)</param>
+		/// <param name="flags">Flags to pass to the material loader</param>
+		/// <param name="skipOptimization">Whether to skip optimization</param>
+		/// <param name="additionalIncludes">Additional include paths to pass to the material loader, can be an empty vector</param>
 		static void LoadMaterialDefinitions(
 			MaterialCategory category,
 			const std::string& setPath,
@@ -54,9 +40,9 @@ namespace SM {
 			bool skipOptimization = false,
 			const std::vector<std::string>& additionalIncludes = {}
 		) {
-			static auto baseAddress = reinterpret_cast<uintptr_t>(GetModuleHandle(nullptr));
-			static auto materialManager = reinterpret_cast<struct MaterialManager*>(baseAddress + Offsets::MaterialManager);
-			static auto loadMaterialDefinitions = reinterpret_cast<void(__thiscall*)(MaterialManager*, MaterialCategory, const std::string&, const std::string&, uint8_t, bool, const std::vector<std::string>&)>(baseAddress + Offsets::MaterialManagerLoad);
+			auto baseAddress = reinterpret_cast<uintptr_t>(GetModuleHandle(nullptr));
+			auto materialManager = reinterpret_cast<struct MaterialManager*>(baseAddress + Offsets::MaterialManager);
+			auto loadMaterialDefinitions = reinterpret_cast<void(__thiscall*)(MaterialManager*, MaterialCategory, const std::string&, const std::string&, uint8_t, bool, const std::vector<std::string>&)>(baseAddress + Offsets::MaterialManagerLoad);
 
 			loadMaterialDefinitions(materialManager, category, setPath, shaderPath, flags, skipOptimization, additionalIncludes);
 		}

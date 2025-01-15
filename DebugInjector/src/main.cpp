@@ -78,7 +78,7 @@ int main(void) {
 			hasAsked = true;
 		}
 
-		std::this_thread::sleep_for(std::chrono::milliseconds(500));
+		//std::this_thread::sleep_for(std::chrono::milliseconds(500));
 		std::cout << "Waiting for " << targetProcess << " to start..." << std::endl;
 		hadToWait = true;
 	}
@@ -86,7 +86,7 @@ int main(void) {
 	// Wait a bit longer to make sure the process is fully loaded
 	// Just bit of safety
 	if (hadToWait) {
-		std::this_thread::sleep_for(std::chrono::seconds(5));
+		//std::this_thread::sleep_for(std::chrono::seconds(5));
 	}
 
 	HANDLE hProcess = GetProcessHandle(targetProcess);
